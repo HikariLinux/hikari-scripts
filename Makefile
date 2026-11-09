@@ -2,7 +2,7 @@ PREFIX=/usr/local
 SYS_PREFIX=$(PREFIX)
 CONFIG_DIR=/etc/default
 BIN_DIR=$(PREFIX)/bin
-SCRIPTS=asahi-diagnose asahi-fwupdate update-m1n1
+SCRIPTS=hikari-diagnose hikari-fwupdate update-m1n1
 ARCH_SCRIPTS=update-grub first-boot
 UNITS=first-boot.service
 MULTI_USER_WANTS=first-boot.service
@@ -28,8 +28,8 @@ install: all
 	install -d $(DESTDIR)$(BIN_DIR)/
 	install -m0755 -t $(DESTDIR)$(BIN_DIR)/ $(BUILD_SCRIPTS)
 	install -dD $(DESTDIR)/etc
-	install -dD $(DESTDIR)$(PREFIX)/share/asahi-scripts
-	install -m0644 -t $(DESTDIR)$(PREFIX)/share/asahi-scripts functions.sh
+	install -dD $(DESTDIR)$(PREFIX)/share/hikari-scripts
+	install -m0644 -t $(DESTDIR)$(PREFIX)/share/hikari-scripts functions.sh
 	install -dD $(DESTDIR)$(SYS_PREFIX)/lib/firmware/vendor
 
 install-mkinitcpio: install
@@ -73,7 +73,7 @@ install-fedora: install install-dracut install-macsmc-battery install-udev-hwdb
 
 uninstall:
 	rm -f $(addprefix $(DESTDIR)$(BIN_DIR)/,$(SCRIPTS))
-	rm -rf $(DESTDIR)$(PREFIX)/share/asahi-scripts
+	rm -rf $(DESTDIR)$(PREFIX)/share/hikari-scripts
 
 uninstall-mkinitcpio:
 	rm -f $(DESTDIR)$(PREFIX)/lib/initcpio/install/asahi

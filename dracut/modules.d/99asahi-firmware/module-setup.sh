@@ -27,9 +27,9 @@ installkernel() {
 install() {
     inst_dir "/lib/firmware"
     ln_r "/vendorfw" "/lib/firmware/vendor"
-    asahiscriptsdir="/usr/share/asahi-scripts"
-    inst_dir $asahiscriptsdir
-    $DRACUT_CP -R -L -t "${initdir}/${asahiscriptsdir}" "${dracutsysrootdir}${asahiscriptsdir}"/*
+    scriptsdir="/usr/share/hikari-scripts"
+    inst_dir $scriptsdir
+    $DRACUT_CP -R -L -t "${initdir}/${scriptsdir}" "${dracutsysrootdir}${scriptsdir}"/*
     inst_multiple cpio cut dirname grep mkdir modprobe mount seq sleep umount
     inst_hook pre-udev 10 "${moddir}/load-asahi-firmware.sh"
     inst_hook cleanup 99 "${moddir}/install-asahi-firmware.sh"

@@ -3,16 +3,16 @@
 
 run_earlyhook() {
     if [ -e /vendorfw ]; then
-        msg ":: Asahi: Vendor firmware was loaded by the bootloader"
+        msg ":: Hikari: Vendor firmware was loaded by the bootloader"
         return 0
     fi
 
     if [ ! -e /proc/device-tree/chosen/asahi,efi-system-partition ]; then
-        msg ":: Asahi: Missing asahi,efi-system-partition variable, firmware will not be loaded!"
+        msg ":: Hikari: Missing asahi,efi-system-partition variable, firmware will not be loaded!"
         return 1
     fi
 
-    msg ":: Asahi: Triggering early load of NVMe modules..."
+    msg ":: Hikari: Triggering early load of NVMe modules..."
     modprobe apple-mailbox
     modprobe nvme-apple
     modprobe xhci-plat-hcd
@@ -29,17 +29,17 @@ run_earlyhook() {
 
     # If the above exists, hopefully the /dev device exists and this will work
 
-    msg ":: Asahi: Unpacking vendor firmware into initramfs..."
+    msg ":: Hikari: Unpacking vendor firmware into initramfs..."
 
     VENDORFW="/run/.system-efi/vendorfw/"
 
     (
-        . /usr/share/asahi-scripts/functions.sh
+        . /usr/share/hikari-scripts/functions.sh
         mount_sys_esp /run/.system-efi
     )
 
     if [ ! -e "$VENDORFW/firmware.cpio" ]; then
-        msg ":: Asahi: Vendor firmware not available in ESP!"
+        msg ":: Hikari: Vendor firmware not available in ESP!"
         umount /run/.system-efi
         return 1
     fi
@@ -47,12 +47,12 @@ run_earlyhook() {
     ( cd /; cpio -i < "$VENDORFW/firmware.cpio" )
     umount /run/.system-efi
 
-    msg ":: Asahi: Vendor firmware unpacked successfully"
+    msg ":: Hikari: Vendor firmware unpacked successfully"
 }
 
 run_latehook() {
     [ -e /vendorfw ] || return
-    msg ":: Asahi: Copying vendor firmware to tmpfs under root filesystem..."
+    msg ":: Hikari: Copying vendor firmware to tmpfs under root filesystem..."
     mkdir -p /new_root/lib/firmware/vendor
     mount -t tmpfs -o mode=0755 vendorfw /new_root/lib/firmware/vendor
     cp -r /vendorfw/* /vendorfw/.vendorfw.manifest /new_root/lib/firmware/vendor

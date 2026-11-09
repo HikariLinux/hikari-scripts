@@ -5,7 +5,11 @@ set -eu
 
 unset PYTHON
 
-[ -e /etc/default/asahi-fwupdate ] && . /etc/default/asahi-fwupdate
+if [ -e /etc/default/hikari-fwupdate ]; then
+    . /etc/default/hikari-fwupdate
+elif [ -e /etc/default/asahi-fwupdate ]; then
+    . /etc/default/asahi-fwupdate
+fi
 
 : "${ASAHIFW:=}"
 : "${VENDORFW:=}"
@@ -15,7 +19,7 @@ unset PYTHON
 if [ -e "$(dirname "$0")"/functions.sh ]; then
     . "$(dirname "$0")"/functions.sh
 else
-    . /usr/share/asahi-scripts/functions.sh
+    . /usr/share/hikari-scripts/functions.sh
 fi
 
 umount=false

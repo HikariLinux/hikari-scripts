@@ -15,7 +15,7 @@ dt() {
 
 banner() {
     cat <<EOF
-# Asahi Linux System Diagnostic Dump
+# Hikari Linux System Diagnostic Dump
 
     Collected at:   $(date) ($(date -Iseconds))
     Username:       $(whoami)
@@ -93,13 +93,16 @@ package_versions() {
     echo "## Package versions"
     if [ -e /etc/arch-release ]; then
       cmd="pacman -Q"
-      pkgs="m1n1 uboot-asahi asahi-scripts asahi-meta asahi-desktop-meta
+      pkgs="hikari-audio hikari-nvram hikari-bless hikari-btsync hikari-wifisync
+            alsa-ucm-conf-hikari m1n1 uboot-asahi hikari-scripts asahi-meta asahi-desktop-meta
             asahi-fwextract asahi-configs alsa-ucm-conf-asahi
             asahilinux-keyring linux linux-asahi linux-asahi-edge
             mesa xorg-server pipewire kwin mutter"
     elif [ -e /etc/fedora-release ]; then
       cmd="rpm -q"
-      pkgs="m1n1 alsa-ucm-asahi asahi-platform-metapackage asahi-repos
+      pkgs="hikari-scripts hikari-audio hikari-nvram hikari-bless hikari-btsync
+            hikari-wifisync hikari-fedora-remix-release alsa-ucm-conf-hikari
+            m1n1 alsa-ucm-asahi asahi-platform-metapackage asahi-repos
             fedora-asahi-remix-scripts tiny-dfr uboot-images-armv8 kernel-16k
             kernel-16k-modules-extra asahi-fwextract dracut-asahi update-m1n1
             asahi-audio speakersafetyd wireplumber pipewire mesa"
@@ -195,7 +198,7 @@ diagnose() {
             echo
             echo "** WARNING! **"
             echo "You are using an unsupported firmware version ($ver) on this platform ($plat)."
-            echo "This means you explicitly chose expert mode when installing Asahi Linux,"
+            echo "This means you explicitly chose expert mode when installing Linux,"
             echo "and then explicitly selected a non-default unsupported version."
             echo "You are on your own. Please do not file bugs. We can't help you."
             echo "Reinstall without using expert mode if you want support."
@@ -232,7 +235,7 @@ diagnose() {
 }
 
 if [ -z "$1" ]; then
-    diagnose "$HOME/asahi-diagnose-$(date +%Y%m%d-%H%M%S).txt"
+    diagnose "$HOME/hikari-diagnose-$(date +%Y%m%d-%H%M%S).txt"
 elif [ "$1" = "-" ]; then
     diagnose /dev/stdout
 else

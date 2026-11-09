@@ -62,7 +62,7 @@ install-udev-hwdb: install
 install-arch: install install-mkinitcpio install-macsmc-battery install-udev-hwdb
 	install -m0755 -t $(DESTDIR)$(BIN_DIR)/ $(BUILD_ARCH_SCRIPTS)
 	install -dD $(DESTDIR)$(PREFIX)/lib/systemd/system
-	install -dD $(DESTDIR)$(PREFIX)/lib/systemd/system/{multi-user,sysinit}.target.wants
+	install -dD $(addprefix $(DESTDIR)$(PREFIX)/lib/systemd/system/,multi-user.target.wants sysinit.target.wants)
 	install -m0644 -t $(DESTDIR)$(PREFIX)/lib/systemd/system $(addprefix systemd/,$(UNITS))
 	ln -sf $(addprefix $(PREFIX)/lib/systemd/system/,$(MULTI_USER_WANTS)) \
 		$(DESTDIR)$(PREFIX)/lib/systemd/system/multi-user.target.wants/
@@ -81,6 +81,7 @@ uninstall-mkinitcpio:
 
 uninstall-dracut:
 	rm -f $(DESTDIR)$(DRACUT_CONF_DIR)/10-asahi.conf
+	rm -rf $(DESTDIR)$(DRACUT_MODULES_DIR)/91kernel-modules-asahi $(DESTDIR)$(DRACUT_MODULES_DIR)/99asahi-firmware
 
 uninstall-macsmc-battery:
 	rm -f $(DESTDIR)$(SYSTEMD_UNIT_DIR)/macsmc-battery-charge-control-end-threshold.path
@@ -90,13 +91,13 @@ uninstall-macsmc-battery:
 uninstall-udev-hwdb:
 	rm -f $(DESTDIR)$(UDEV_HWDB_DIR)/65-autosuspend-override-asahi-sdhci.hwdb
 
-uninstall-arch: uninstall-mkinitcpio uninstall-macsmc-battery uninstall-udev-hwdb
+uninstall-arch: uninstall uninstall-mkinitcpio uninstall-macsmc-battery uninstall-udev-hwdb
 	rm -f $(addprefix $(DESTDIR)$(BIN_DIR)/,$(ARCH_SCRIPTS))
 	rm -f $(addprefix $(DESTDIR)$(PREFIX)/lib/systemd/system/,$(UNITS))
 	rm -f $(addprefix $(DESTDIR)$(PREFIX)/lib/systemd/system/multi-user.target.wants/,$(MULTI_USER_WANTS))
 	rm -f $(DESTDIR)$(PREFIX)/share/libalpm/hooks/95-m1n1-install.hook
 
-uninstall-fedora: uninstall-dracut uninstall-macsmc-battery uninstall-udev-hwdb
+uninstall-fedora: uninstall uninstall-dracut uninstall-macsmc-battery uninstall-udev-hwdb
 
 .PHONY: clean \
         install \

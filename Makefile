@@ -31,6 +31,8 @@ install: all
 	install -dD $(DESTDIR)$(PREFIX)/share/hikari-scripts
 	install -m0644 -t $(DESTDIR)$(PREFIX)/share/hikari-scripts functions.sh
 	install -dD $(DESTDIR)$(SYS_PREFIX)/lib/firmware/vendor
+	install -dD $(DESTDIR)$(UDEV_RULES_DIR)
+	install -m0644 -t $(DESTDIR)$(UDEV_RULES_DIR) udev/rules.d/60-hikari-nvram.rules
 
 install-mkinitcpio: install
 	install -dD $(DESTDIR)$(PREFIX)/lib/initcpio/install
@@ -74,6 +76,7 @@ install-fedora: install install-dracut install-macsmc-battery install-udev-hwdb
 uninstall:
 	rm -f $(addprefix $(DESTDIR)$(BIN_DIR)/,$(SCRIPTS))
 	rm -rf $(DESTDIR)$(PREFIX)/share/hikari-scripts
+	rm -f $(DESTDIR)$(UDEV_RULES_DIR)/60-hikari-nvram.rules
 
 uninstall-mkinitcpio:
 	rm -f $(DESTDIR)$(PREFIX)/lib/initcpio/install/asahi

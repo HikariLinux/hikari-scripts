@@ -1,0 +1,2 @@
+# SPDX-License-Identifier: MIT
+SUBSYSTEM=="mtd", KERNEL=="mtd[0-9]*", KERNEL!="mtd*ro", ATTR{name}=="nvram", SYMLINK+="mtd/by-name/nvram"
